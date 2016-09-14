@@ -1,8 +1,11 @@
-# WORK IN PROGRESS
 
 # cljs-dnd
 
 Idiomatic drag-and-drop for ClojureScript applications with React rendering
+
+# ==============================
+# WORK IN PROGRESS / NOT USEABLE
+# ==============================
 
 # Goals
 
