@@ -1,6 +1,5 @@
-; (defn draggable []
-;   (reagent/create-class {:reagent-render draggable-render
-;                          :component-did-mount draggable-did-mount}))
+
+(ns cljs-dnd.wrapper)
 
 
 (defn drag-source [type comp target conn-fn]
@@ -14,3 +13,7 @@
   @type is enum
   @comp is component to decorate
   @conn-fn accepts @connect & @monitor")
+
+; (defn draggable []
+;   (reagent/create-class {:reagent-render draggable-render
+;                          :component-did-mount draggable-did-mount}))
