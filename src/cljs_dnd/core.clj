@@ -9,12 +9,19 @@
   (:import [goog.events EventType]))
 
 
+(defn update-state [key val]
+  (let [keyz (set (keys @state))]
+    (if (contains? keyz key)
+      (swap! state assoc key val)
+      ("ERROR"))))
+
 (defn parse-event [e]
-  {:index (-> e .-target .-dataset .-index int) ;; index of hovering or hoverable item?
-   :drag-index (:drag-index @dnd-store)
-   :brect-bottom (-> e .-target .getBoundingClientRect .-bottom)
-   :brect-top (-> e .-target .getBoundingClientRect .-top)
-   :middle-y (/ (- brect-bottom brect-top) 2)
+  {:hix (-> e .-target .-dataset .-index int) ;; index of hovering or hoverable item?
+   :dix (:dix @state)         ;; and here?
+
+   :item-bottom (-> e .-target .getBoundingClientRect .-bottom)
+   :item-top (-> e .-target .getBoundingClientRect .-top)
+   :item-mid (/ (- brect-bottom brect-top) 2)
    :item-type  (-> e .-target .-dataset .-type)
    :event-type (-> e .-type)}) ;; TODO check!
 
@@ -33,6 +40,10 @@
 (defn on-drag-end [e]
   "nimp")
 
+; (defn- events->chan [el event-type c]
+;   (events/listen el event-type #(put! c %))
+;   c)
+
 (defn listen! []
   (events/listen js/window EventType.DRAGSTART on-drag-start)
   (events/listen js/window EventType.DRAGOVER on-drag-over)
@@ -42,10 +53,10 @@
 
   (go-loop []
      (let [e (<! dnd-chan)
-           {:keys [hover client-y]} e        ;; destruct event
-           {:keys [drag-index]} @dnd-store]  ;; destruct state
+           {:keys [hix cli-y]} e        ;; destruct event
+           {:keys [drag-index]} @state]  ;; destruct state
 
-        (when-not (= drag-index (:index hover))
+        (when-not (= dix hix)
           (dispatch [:reorder_msg drag-index hover client-y]))
 
        (recur))))
