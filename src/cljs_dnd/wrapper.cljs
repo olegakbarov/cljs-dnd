@@ -1,19 +1,40 @@
 
 (ns cljs-dnd.wrapper)
 
+;; TODO
+(defn drag-wrapper)
 
-(defn drag-source [type comp target conn-fn]
-  "HOC that registers components as source of drag-start event
-  @type is enum
-  @comp is component to decorate
-  @conn-fn connects to drop target")
+;; TODO
+(defn drop-wrapper)
 
-(defn drop-target [type comp source conn-fn]
-  "HOC that registers components as target to on-drop event
-  @type is enum
-  @comp is component to decorate
-  @conn-fn accepts @connect & @monitor")
+(defn wrapper []
+  (.createClass
+    reagent/react
+    #js {:componentWillMount (fn [])
+         :componentDidMount (fn [])
+         :componentWillUpdate (fn [next-props]
+                                (this-as this
+                                  (when (and next-props
+                                             (.-props this)))))
+         :render (fn []
+                   (this-as this
+                     (let [app-db (.-wrap (.-props this))
+                           children (.-children (.-props this))]
+                       (reagent/as-element
+                            [:div.board-content
+                              children]))))}))
 
 ; (defn draggable []
 ;   (reagent/create-class {:reagent-render draggable-render
-;                          :component-did-mount draggable-did-mount}))
+;                          :component-did-mount         draggable-did-mount}))
+
+; (defn greeter
+;   [name]
+;   [:div "Hello: " name])
+;
+; (defn decorate
+;   [& HoCs]
+;   (into [:div] HoCs))
+;
+; ;; markup:
+; [decorate [greeter "Spot"] [greeter "Fiddo"]]
