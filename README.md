@@ -1,11 +1,39 @@
 
 # cljs-dnd
 
-Idiomatic drag-and-drop for ClojureScript applications with React rendering
+Idiomatic drag-and-drop for ClojureScript applications with React rendering.
 
 # ==============================
 # WORK IN PROGRESS / NOT USEABLE
+# Current state: active design stage
 # ==============================
+
+# Current design sketch
+
+Components wrapped with HoCs provided by `cljs-dnd`.
+
+```clojure
+(:require [cljs-dnd.core :refer [drag-wrapper
+                                 drop-wrapper]])
+
+(defn container []
+  [:ul
+    (for [item cards]
+      [drop-wrapper type card-target
+        [drag-wrapper type card-source
+          [card item]]])]) ;; items is the components we wrap
+```
+
+Both `card-target` and `card-source` provide interface for handling custom logic of your app. This might look like this:
+
+```clojure
+(def card-target
+  {:on-hover (fn [props dnd-state]
+                (let [{:keys [drag-index drop-index]} dnd-state
+                      {:keys [id move-card]} props]
+                    ;; more logic
+                    (move-card id)))})
+```
 
 # Goals
 
@@ -23,5 +51,4 @@ Idiomatic drag-and-drop for ClojureScript applications with React rendering
 
 Copyright © 2016 Oleg Akbarov
 
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+Distributed under the Eclipse Public License either version 1.0 or (at your option) any later version.
