@@ -1,49 +1,29 @@
 
-(ns cljs-dnd.wrapper)
+(ns cljs-dnd.wrapper
+  (:require [reagent.core :as r]))
 
-;; TODO
-(defn drag-wrapper)
-
-;; TODO
-(defn drop-wrapper)
-
-(defn wrapper []
-  (.createClass
-    reagent/react
-    #js {:componentWillMount (fn [])
-         :componentDidMount (fn [])
-         :componentWillUpdate (fn [next-props]
-                                (this-as this
-                                  (when (and next-props
-                                             (.-props this)))))
-         :render (fn []
-                   (this-as this
-                     (let [app-db (.-wrap (.-props this))
-                           children (.-children (.-props this))]
-                       (reagent/as-element
-                            [:div.board-content
-                              children]))))}))
-
-; (defn draggable []
-;   (reagent/create-class {:reagent-render draggable-render
-;                          :component-did-mount         draggable-did-mount}))
-
-; (defn greeter
-;   [name]
-;   [:div "Hello: " name])
-;
-; (defn decorate
-;   [& HoCs]
-;   (into [:div] HoCs))
-;
-; ;; markup:
-; [decorate [greeter "Spot"] [greeter "Fiddo"]]
-
-; :draggable true ; -> otherwise the browser won't let you drag it
-; :on-drag-over allow-drop
-; :on-drag-enter allow-drop
-; :on-drag-start #(.setData (.-dataTransfer %) "text/plain" "") ;; for Firefox. You MUST set something as data.
-; :on-drag-end some-action
-; :on-drop some-other-action
-
-; (.setData (.-dataTransfer e) "text/plain" "") ;; for Firefox.
+(defn drag-wrapper [opts component]
+  (let [{:keys [drag-type]} opts]
+    (r/create-class
+      {:get-initial-state
+         (fn [this])
+       :component-will-receive-props
+         (fn [this new-argv])
+       :should-component-update
+         (fn [this old-argv new-argv])
+       :component-will-mount
+         (fn [this])
+       :component-did-mount
+         (fn [this]
+           (let [node (reagent.dom/dom-node this)]
+             (aset node "draggable" true)))
+       :component-will-update
+         (fn [this new-argv])
+       :component-did-update
+         (fn [this old-argv])
+       :component-will-unmount
+         (fn [this])
+       :render
+          (fn []
+             (this-as this
+               (r/as-element component)))})))

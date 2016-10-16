@@ -1,9 +1,9 @@
 
-(ns examples.sort
+(ns cljs-dnd.examples.sort
   (:require [reagent.core :as r]
-            [cljs-dnd.core :refer [dnd-start!
-                                   drag-wrapper
-                                   drop-wrapper]]))
+            [cljs-dnd.core :refer [dnd-start!]]
+            [cljs.core.async :refer [<! put! chan timeout]]
+            [cljs-dnd.wrapper :refer [drag-wrapper]]))
 
 (def cards
   [{:id 1 :title "First things first"}
@@ -18,6 +18,7 @@
    :margin-bottom "5px"
    :cursor "move"})
 
+;; you define your component as usual
 (defn card [props]
   (let [{:keys [id title]} props]
     ^{:key id}
@@ -25,9 +26,7 @@
       {:style style}
       title]))
 
-(def type "CARD")
-
-;; BUSINESS LOGIC HERE
+(def drag-type "CARD")
 
 (def card-target
   {:on-hover (fn [props dnd-state]
@@ -38,17 +37,19 @@
 
 (def card-source
   {:on-drag (fn [dnd-chan]
-              (let [id index] ;; get id and index somewhere
+              (let [id "1" ;; get id and index somewhere
+                    index "1"]
                 (put! dnd-chan id index)))})
 
 (defn container []
   [:ul
     (for [item cards]
-      [drop-wrapper type card-target
-        [drag-wrapper type card-source
-          [card item]]])])
+      ^{:key (:id item)}
+      [drag-wrapper {:drag-type drag-type :drag-target card-target}
+       [card item]])])
 
 (defn mount-root []
+  ;; initialize dnd
   (dnd-start!)
   (r/render [container]
     (.getElementById js/document "root")))
