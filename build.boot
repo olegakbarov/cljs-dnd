@@ -1,7 +1,7 @@
 (def project 'cljs-dnd)
 (def version "0.1.0-SNAPSHOT")
 
-(set-env! :resource-paths #{"resources" "src" "examples"}
+(set-env! :resource-paths #{"resources" "src"}
           :source-paths   #{"test"}
           :dependencies '[[adzerk/boot-cljs           "1.7.228-1"  :scope "test"]
                           [adzerk/boot-cljs-repl      "0.3.0"      :scope "test"]
@@ -19,7 +19,7 @@
  pom {:project     project
       :version     version
       :description "Idiomatic drag-and-drop for ClojureScript applications with React rendering."
-      ; :url         "http://example/FIXME"
+      :url         "https://olegakbarov.github.io/cljs-dnd"
       :scm         {:url "https://github.com/olegakbarov/cljs-dnd"}
       :license     {"Eclipse Public License"
                     "http://www.eclipse.org/legal/epl-v10.html"}})
@@ -46,9 +46,9 @@
         (cljs)))
 
 (deftask development []
-  ;; should run examples
+  "Run examples in development"
   (task-options! cljs   {:optimizations :none :source-map true}
-                 reload {:on-jsload 'cljs-dnd/examples.sort/mount-root})
+                 reload {:on-jsload 'cljs-dnd.examples.sort/mount-root})
   identity)
 
 (deftask dev

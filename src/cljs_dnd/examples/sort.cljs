@@ -26,26 +26,39 @@
       {:style style}
       title]))
 
-(def drag-type "CARD")
+;; this might be any (pure) function that updates your state (eg. re-frame dispatch)
+(defn swap-items
+  "Swaps two items with indexes"
+  [a b]
+  (map
+   (fn [x] (condp = (:id x)
+             a (assoc-in x [:id] b)
+             b (assoc-in x [:id] a)
+             x))
+   cards))
 
-(def card-target
-  {:on-hover (fn [props dnd-state]
-                (let [{:keys [hix dix]}   dnd-state
-                      {:keys [move-card]} props]
-                  (if "a lot of cond met"
-                    (move-card))))})
+(defn on-hover [props dnd-state]
+    ;; list available props and state keys
+    (let [{:keys [move-card]} props
+          {:keys [id index]}  dnd-state]
+      (if "a lot of cond met"
+        (swap-items index id))))
 
-(def card-source
-  {:on-drag (fn [dnd-chan]
-              (let [id "1" ;; get id and index somewhere
-                    index "1"]
-                (put! dnd-chan id index)))})
+(defn on-drag [dnd-chan id index]
+  ;; get item id and index
+  (put! dnd-chan id index))
+
+;; Attach to desired behaviour to opts and pass them to wrapper
+(def opts
+  {:drag-type :card
+   :on-hover on-hover
+   :on-drag on-drag})
 
 (defn container []
   [:ul
     (for [item cards]
       ^{:key (:id item)}
-      [drag-wrapper {:drag-type drag-type :drag-target card-target}
+      [drag-wrapper opts
        [card item]])])
 
 (defn mount-root []
