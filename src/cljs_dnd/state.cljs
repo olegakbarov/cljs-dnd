@@ -1,12 +1,27 @@
 
-(ns cljs-dnd.state)
+(ns cljs-dnd.state
+  (:require [reagent.core :as r]))
 
-(def state (atom {:dix nil       ;; drag-index
-                  :hix nil       ;; hover-index
-                  :cli-y nil}))  ;; clientY
+(def state (r/atom {:drag-index nil
+                    :hover-index nil
+                    ;; coords
+                    :y nil
+                    :x nil
+                    ;; react-dnd
+                    :is-dragging nil
+                    :item-type nil
+                    :init-client-offset nil
+                    :client-offset nil
+                    :init-src-client-offset nil
+                    :src-client-offset nil
+                    :diff-from-initial-offset nil}))
 
-(defn update-state [key val]
-  (let [keyz (set (keys @state))]
-    (if (contains? keyz key)
-      (swap! state assoc key val)
-      ("ERROR"))))
+(defn add-source [id])
+(defn remove-source [id])
+
+(defn add-target [id])
+(defn remove-target [id])
+
+(defn manager [store monitor])
+
+(defn test-backend [manager])

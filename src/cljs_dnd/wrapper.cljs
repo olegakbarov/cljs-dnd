@@ -38,3 +38,12 @@
 ;
 ; ;; markup:
 ; [decorate [greeter "Spot"] [greeter "Fiddo"]]
+
+; :draggable true ; -> otherwise the browser won't let you drag it
+; :on-drag-over allow-drop
+; :on-drag-enter allow-drop
+; :on-drag-start #(.setData (.-dataTransfer %) "text/plain" "") ;; for Firefox. You MUST set something as data.
+; :on-drag-end some-action
+; :on-drop some-other-action
+
+; (.setData (.-dataTransfer e) "text/plain" "") ;; for Firefox.

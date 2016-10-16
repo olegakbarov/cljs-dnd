@@ -39,6 +39,7 @@
 (defn handle-drop [e])
   ;; TODO update accrordin to event
 
+
 ;; --------------------------
 ;; EVENTS:
 
@@ -56,6 +57,7 @@
 
 (defn on-event [e]
   (put! dnd-chan (parse-event e)))
+
 
 ;; --------------------------
 ;; LISTENER:
