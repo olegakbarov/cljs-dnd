@@ -1,7 +1,7 @@
 (def project 'cljs-dnd)
 (def version "0.1.0-SNAPSHOT")
 
-(set-env! :resource-paths #{"resources" "src"}
+(set-env! :resource-paths #{"resources" "src" "examples"}
           :source-paths   #{"test"}
           :dependencies '[[adzerk/boot-cljs           "1.7.228-1"  :scope "test"]
                           [adzerk/boot-cljs-repl      "0.3.0"      :scope "test"]
@@ -39,7 +39,7 @@
         (install)))
 
 (deftask run []
-  (comp (serve)
+  (comp (serve :dir "examples")
         (watch)
         (cljs-repl)
         (reload)
