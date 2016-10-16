@@ -4,11 +4,24 @@
 Idiomatic drag-and-drop for ClojureScript applications with React rendering.
 
 # ==============================
-# WORK IN PROGRESS / NOT USEABLE
-# Current state: active design stage
+# UNDER ACTIVE DEVELOPMENT
 # ==============================
 
-# Current design sketch
+# Entities:
+
+### State
+
+The state lets you update the props of your components in response to the drag and drop state changes.
+
+# High level overview:
+
+```
+1. wrapped-component receives props
+
+2. you manage your state with this data (rearrange, change styles, dispatch stuff)
+
+3. wrapped comp emits events and goes to 1.
+```
 
 Components wrapped with HoCs provided by `cljs-dnd`.
 
@@ -37,11 +50,9 @@ Both `card-target` and `card-source` provide interface for handling custom logic
 
 # Goals
 
-- Declarative drag-and-drop for ClojureScript apps rendered with React
-- Not dependent on framework (Reagent/Rum)
-- Flexible and low-level solution
+- Build in the spirit of React-DnD i.e. data, and not the views, as the source of truth, pluggable backends, flexible and low-level
 - Use of ClojureScript killer features: `core.async` & `Google Closure`
-- pluggable backends (html5, touch)
+- No dependency on framework (Reagent/Rum)
 
 # Inspiration
 
