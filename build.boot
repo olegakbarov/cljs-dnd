@@ -39,7 +39,7 @@
         (install)))
 
 (deftask run []
-  (comp (serve :dir "examples")
+  (comp (serve)
         (watch)
         (cljs-repl)
         (reload)
@@ -48,7 +48,7 @@
 (deftask development []
   ;; should run examples
   (task-options! cljs   {:optimizations :none :source-map true}
-                 reload {:on-jsload 'examples.sort/mount-root})
+                 reload {:on-jsload 'cljs-dnd/examples.sort/mount-root})
   identity)
 
 (deftask dev
