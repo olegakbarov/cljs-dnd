@@ -1,9 +1,12 @@
 
 (ns cljs-dnd.wrapper
-  (:require [reagent.core :as r]))
+  (:require [reagent.core :as r]
+            [cljs-dnd.state :refer [add-source!
+                                    add-target!]]))
 
 (defn drag-wrapper [opts component]
   (let [{:keys [drag-type]} opts]
+    (prn opts)
     (r/create-class
       {:get-initial-state
          (fn [this])
@@ -15,8 +18,11 @@
          (fn [this])
        :component-did-mount
          (fn [this]
+           ;; dispatch the registration of this dom el as draggable
            (let [node (reagent.dom/dom-node this)]
-             (aset node "draggable" true)))
+             (do
+               (add-source! node)
+               (aset node "draggable" true))))
        :component-will-update
          (fn [this new-argv])
        :component-did-update
@@ -26,4 +32,7 @@
        :render
           (fn []
              (this-as this
-               (r/as-element component)))})))
+              (r/create-element
+                "div"
+                (clj->js opts)
+                (r/as-element component))))})))

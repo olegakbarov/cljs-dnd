@@ -3,7 +3,8 @@
   (:require [reagent.core :as r]
             [cljs-dnd.core :refer [dnd-start!]]
             [cljs.core.async :refer [<! put! chan timeout]]
-            [cljs-dnd.wrapper :refer [drag-wrapper]]))
+            [cljs-dnd.wrapper :refer [drag-wrapper]]
+            [cljs-dnd.state :refer [state]]))
 
 (def cards
   [{:id 1 :title "First things first"}
@@ -16,6 +17,7 @@
   {:border "1px dashed black"
    :padding "10px"
    :margin-bottom "5px"
+   :width "300px"
    :cursor "move"})
 
 ;; you define your component as usual
@@ -28,7 +30,7 @@
 
 ;; this might be any (pure) function that updates your state (eg. re-frame dispatch)
 (defn swap-items
-  "Swaps two items with indexes"
+  "Swaps two items with given indexes"
   [a b]
   (map
    (fn [x] (condp = (:id x)
@@ -48,7 +50,7 @@
   ;; get item id and index
   (put! dnd-chan id index))
 
-;; Attach to desired behaviour to opts and pass them to wrapper
+;; We'll pass handlers as map
 (def opts
   {:drag-type :card
    :on-hover on-hover
@@ -56,6 +58,9 @@
 
 (defn container []
   [:ul
+    [:input {:type "button"
+             :on-click #(.log js/console (clj->js @state))
+             :value "State"}]
     (for [item cards]
       ^{:key (:id item)}
       [drag-wrapper opts
