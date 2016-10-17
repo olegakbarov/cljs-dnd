@@ -1,5 +1,5 @@
 
-(ns cljs-dnd.core
+(ns cljs-dnd.backends.html5)
   (:require-macros [cljs.core.async.macros :refer [go go-loop]])
   (:require
     [cljs-dnd.state :refer [state]]
@@ -7,8 +7,24 @@
     [goog.events :as events])
   (:import [goog.events EventType]))
 
-;; --------------------------
-;; HANDLERS:
+(defn register-source [])
+
+(defn register-target [])
+
+(defn handle-drag-start [])
+
+(defn handle-drag [])
+
+;; is there a such thing??
+(defn handle-drag-end [])
+
+(defn handle-drop [])
+
+
+;;----------------------------------------------------------------------
+;;----------------------------------------------------------------------
+
+(def dnd-chan (chan))
 
 (defn handle-drag-start [e]
   (let [{:keys [drag-index item-type]} e
@@ -62,7 +78,7 @@
 ;; --------------------------
 ;; LISTENER:
 
-(defn dnd-start! []
+(defn dnd-start! [backend]
   (events/listen js/window EventType.DRAGSTART on-event)
   (events/listen js/window EventType.DRAGOVER  on-event)
   (events/listen js/window EventType.DRAGEND   on-event)
