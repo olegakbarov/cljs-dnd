@@ -1,13 +1,11 @@
 
 # cljs-dnd
 
+>
 > ... friends don't let friends keep their state in the DOM ...
+>
 
 Idiomatic drag-and-drop for ClojureScript applications with React rendering.
-
-# =======================
-# UNDER ACTIVE DEVELOPMENT
-# =======================
 
 # Entities:
 
