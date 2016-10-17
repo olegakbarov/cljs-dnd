@@ -1,7 +1,7 @@
 
 (ns cljs-dnd.examples.sort
   (:require [reagent.core :as r]
-            [cljs-dnd.core :refer [dnd-start!]]
+            [cljs-dnd.core :refer [dnd-init!]]
             [cljs.core.async :refer [<! put! chan timeout]]
             [cljs-dnd.wrapper :refer [drag-wrapper]]
             [cljs-dnd.state :refer [state]]))
@@ -15,6 +15,7 @@
 
 (def style
   {:border "1px dashed black"
+   :background-color "white"
    :padding "10px"
    :margin-bottom "5px"
    :width "300px"
@@ -22,10 +23,14 @@
 
 ;; you define your component as usual
 (defn card [props]
-  (let [{:keys [id title]} props]
+  (let [{:keys [id title state]} props]
+    (.log js/console (clj->js props))
     ^{:key id}
     [:li
-      {:style style}
+      {:style (if (:is-dragging state)
+                  (merge {:background-color "red"
+                          :opacity ".4"})
+                  style)}
       title]))
 
 ;; this might be any (pure) function that updates your state (eg. re-frame dispatch)
@@ -67,7 +72,7 @@
        [card item]])])
 
 (defn mount-root []
-  ;; initialize dnd
-  (dnd-start!)
+  ;; initialize dnd with default html5 backend
+  (dnd-init!)
   (r/render [container]
     (.getElementById js/document "root")))
