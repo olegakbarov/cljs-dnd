@@ -2,10 +2,12 @@
 # cljs-dnd
 
 >
-> ... friends don't let friends keep their state in the DOM ...
+> «... friends don't let friends keep their state in the DOM ...»
 >
 
 Idiomatic drag-and-drop for ClojureScript applications with React rendering.
+
+# This is very much vork in progress. I'm figuring this out...
 
 # Entities:
 
