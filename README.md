@@ -7,7 +7,7 @@
 
 Idiomatic drag-and-drop for ClojureScript applications with React rendering.
 
-# This is very much vork in progress. I'm figuring this out...
+# This is very much work in progress. I'm figuring this out...
 
 # Entities:
 
